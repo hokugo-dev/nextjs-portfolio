@@ -1,103 +1,155 @@
-import Image from "next/image";
+'use client';
+import { Suspense, useState, useEffect, useRef } from 'react';
+import * as THREE from 'three';
+import { Canvas, useLoader, useFrame } from '@react-three/fiber';
+import { GLTFLoader } from 'three-stdlib';
+
+import { Job } from '@/types';
+
+const Model = () => {
+  const gltf = useLoader(GLTFLoader, '/snow.gltf');
+  return <primitive object={gltf.scene} />;
+};
+
+const jobList: Job[] = [{
+  id: 1,
+  name: '建築業向け基幹システム開発・保守 perl',
+  summary: '自社開発webパッケージソフト（顧客・工事管理）の開発・保守',
+  term: '約8年',
+  phase: '要件定義・基本設計・詳細設計・製造・単体テスト・結合テスト',
+  architecture: 'perl, html, Javascript, jQuery, postgresql',
+}, {
+  id: 2,
+  name: '契約書管理システム開発 Vue.js, Django',
+  summary: 'web上で契約締結・契約書管理を行うシステムの新規開発',
+  term: '5ヶ月',
+  phase: '製造・単体テスト',
+  architecture: 'Python, Django, Typescript, mysql, Docker, Git',
+}, {
+  id: 3,
+  name: '士業向けシステム開発 Vue.js, angular.js',
+  summary: '法律事務所向けの顧客・案件管理を行うwebシステムの機能追加',
+  term: '2年9ヶ月',
+  phase: '製造・単体テスト',
+  architecture: 'Node.js, angular.js, Vue.js, mysql, Sequlize, Docker, Git',
+}];
+
+const defaultOpen: boolean[] = jobList.map(() => false);
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [jobOpenList, setJobOpenList] = useState<boolean[]>(defaultOpen);
+  const toggleAccordion = (index: number) => {
+    setJobOpenList((prev) =>
+      prev.map((isOpen, i) => (i === index ? !isOpen : isOpen))
+    );
+  };
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div>
+      <main className="container mx-auto item-center">
+        <div className="relative h-screen">
+          <h1 className="absolute top-0 w-full text-4xl text-center mt-[30px] mb-4 text-blue-900 font-bold">ポートフォリオをご覧いただきありがとうございます</h1>
+          <div className="absolute top-0 w-full mt-[50px]">
+            <div className="mx-auto w-[1200px] h-[675px]">
+              <Canvas camera={{ position: [-8, 3.5, 3], fov: 40 }}>
+                <directionalLight position={[-5, 7, 6]} intensity={3} />
+                <Suspense fallback={null}>
+                  <Model/>
+                </Suspense>
+              </Canvas>
+            </div>
+          </div>
+          <div className="absolute w-full bottom-[80px] mt-[50px] px-8">
+            <ul className="flex justfy-between text-xl text-semibold mx-2">
+              <li className="flex-auto text-center cursor-pointer hover:text-gray-500"><a href="#profile">プロフィール</a></li>
+              <li className="flex-auto text-center cursor-pointer hover:text-gray-500"><a href="#skill">スキル・資格</a></li>
+              <li className="flex-auto text-center cursor-pointer hover:text-gray-500"><a href="#job">主な参画案件</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div id="profile" className="h-screen p-1">
+          <h2 className="text-2xl m-8 pl-4 border-l-8 border-blue-900">プロフィール</h2>
+          <div className="ml-8 p-4">
+            <p>2012年にシステム開発企業に入社後、自社パッケージ製品のweb開発案件に長く携わってまいりました。
+              <br />
+              要件定義から顧客対応まで幅広い業務を経験する中で、実践的なweb開発のスキルを身につけました。</p>
+            <p>2019年に地元札幌にUターンし、フリーランスとして主にフルリモートの案件に参画しております。</p>
+          </div>
+          <h3 className="text-xl mt-10 mb-4 mx-8 pl-4">このサイトについて</h3>
+          <div className="ml-8 p-4">
+            <p>Typescript, Next.js, tailwindcss</p>
+            <p>Docker, Vercel</p>
+            <p>Blender</p>
+            <p><a className="font-medium text-blue-600 hover:underline" href="https://github.com/hokugo-dev/nextjs-portfolio" target="_blank">githubはこちら</a></p>
+          </div>
+        </div>
+
+        <div id="skill" className="h-screen p-1">
+          <h2 className="text-2xl m-8 pl-4 border-l-8 border-blue-900">スキル</h2>
+          <div className="flex gap-[50px] px-8">
+            <div className="flex-auto boder-gray-400 bg-gray-100 rounded-lg shadow-lg p-4">
+              <h3 className="text-xl">サーバサイド</h3>
+              <div className="p-1">
+                <p>■■■ python, Django</p>
+                <p>■■□ Node.js</p>
+                <p>■■□ perl</p>
+                <p>■□□ java</p>
+              </div>
+            </div>
+            <div className="flex-auto boder-gray-400 bg-gray-100 rounded-lg shadow-lg p-4">
+              <h3 className="text-xl">フロントエンド</h3>
+              <div className="p-1">
+                <p>■■■ Javascript</p>
+                <p>■■□ HTML, CSS</p>
+                <p>■□□ Typescript</p>
+                <p>■□□ Vue.js</p>
+                <p>■□□ React, Next.js</p>
+                <p>■□□ Svelte</p>
+                <p>■□□ angular.js</p>
+              </div>
+            </div>
+          </div>
+          <h3 className="text-xl mt-10 mb-4 mx-8 pl-8">保有資格</h3>
+          <div className="ml-8 p-4">
+            <p>2011/06　基本情報技術者</p>
+            <p>2017/06　応用情報技術者</p>
+            <p>2018/05　Oracle Java Silver SE8</p>
+            <p>2018/06　データベーススペシャリスト</p>
+            <p>2022/04　Python3エンジニア認定基礎試験</p>
+          </div>
+        </div>
+
+        <div id="job" className="h-screen p-1">
+          <h2 className="text-2xl m-8 pl-4 border-l-8 border-blue-900">主な参画案件</h2>
+          <div className="ml-8 p-4">
+            {jobList.map((jobObj: Job, index: number) => {
+              return <div key={index} className="boder-gray-400 bg-gray-100 rounded-lg p-2 mb-4 shadow-sm cursor-pointer"
+                  onClick={() => toggleAccordion(index)}>
+                <h3 className="flex justify-between text-xl px-2 mb-2">
+                  {jobObj.name}
+                  <button>
+                    {jobOpenList[index] && (
+                      <span className="text-2xl font-gray-900">▲</span>
+                    )}
+                    {!jobOpenList[index] && (
+                      <span className="text-2xl font-gray-900">▼</span>
+                    )}
+                  </button>
+                </h3>
+                {jobOpenList[index] && (
+                  <div className="px-4 pb-4 text-gray-700">
+                    <p>{jobObj.summary}</p>
+                    <p>期間：{jobObj.term}</p>
+                    <p>担当フェーズ：{jobObj.phase}</p>
+                    <p>開発環境等：{jobObj.architecture}</p>
+                  </div>
+                )}
+              </div>;
+            })}
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
