@@ -8,7 +8,15 @@ import { Job } from '@/types';
 
 const Model = () => {
   const gltf = useLoader(GLTFLoader, '/snow.gltf');
-  return <primitive object={gltf.scene} />;
+  const ref = useRef<THREE.Object3D>(null);
+
+  useFrame(() => {
+    if (ref?.current) {
+      ref.current.rotation.y += 0.01;
+    }
+  });
+
+  return <primitive object={gltf.scene} ref={ref} />;
 };
 
 const jobList: Job[] = [{
