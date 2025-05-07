@@ -21,21 +21,21 @@ const Model = () => {
 
 const jobList: Job[] = [{
   id: 1,
-  name: '建築業向け基幹システム開発・保守 perl',
+  name: '建築業向け基幹システム開発・保守 - perl',
   summary: '自社開発webパッケージソフト（顧客・工事管理）の開発・保守',
   term: '約8年',
   phase: '要件定義・基本設計・詳細設計・製造・単体テスト・結合テスト',
   architecture: 'perl, html, Javascript, jQuery, postgresql',
 }, {
   id: 2,
-  name: '契約書管理システム開発 Vue.js, Django',
+  name: '契約書管理システム開発 - Vue.js, Django',
   summary: 'web上で契約締結・契約書管理を行うシステムの新規開発',
   term: '5ヶ月',
   phase: '製造・単体テスト',
   architecture: 'Python, Django, Typescript, mysql, Docker, Git',
 }, {
   id: 3,
-  name: '士業向けシステム開発 Vue.js, angular.js',
+  name: '士業向けシステム開発 - Vue.js, angular.js',
   summary: '法律事務所向けの顧客・案件管理を行うwebシステムの機能追加',
   term: '2年9ヶ月',
   phase: '製造・単体テスト',
@@ -53,12 +53,12 @@ export default function Home() {
   };
 
   return (
-    <div>
+    <div className="max-sm:w-screen">
       <main className="container mx-auto item-center">
         <div className="relative h-screen">
-          <h1 className="absolute top-0 w-full text-4xl text-center mt-[30px] mb-4 text-blue-900 font-bold">ポートフォリオをご覧いただきありがとうございます</h1>
-          <div className="absolute top-0 w-full mt-[50px]">
-            <div className="mx-auto w-[1200px] h-[675px]">
+          <h1 className="absolute top-0 w-full text-xl md:text-4xl text-center mt-[30px] mb-4 text-blue-900 font-bold">ポートフォリオをご覧いただきありがとうございます</h1>
+          <div className="absolute top-0 w-full mt-[80px]">
+            <div className="mx-auto w-[300px] h-[197px] md:w-[600px] md:h-[338px] lg:w-[800px] lg:h-[450px] xl:w-[1200px] xl:h-[675px]">
               <Canvas camera={{ position: [-8, 3.5, 3], fov: 40 }}>
                 <directionalLight position={[-5, 7, 6]} intensity={3} />
                 <Suspense fallback={null}>
@@ -68,7 +68,7 @@ export default function Home() {
             </div>
           </div>
           <div className="absolute w-full bottom-[80px] mt-[50px] px-8">
-            <ul className="flex justfy-between text-xl text-semibold mx-2">
+            <ul className="flex justfy-between md:text-xl text-semibold mx-2">
               <li className="flex-auto text-center cursor-pointer hover:text-gray-500"><a href="#profile">プロフィール</a></li>
               <li className="flex-auto text-center cursor-pointer hover:text-gray-500"><a href="#skill">スキル・資格</a></li>
               <li className="flex-auto text-center cursor-pointer hover:text-gray-500"><a href="#job">主な参画案件</a></li>
@@ -96,7 +96,7 @@ export default function Home() {
         <div id="skill" className="h-screen p-1">
           <h2 className="text-2xl m-8 pl-4 border-l-8 border-blue-900">スキル</h2>
           <div className="flex gap-[50px] px-8">
-            <div className="flex-auto boder-gray-400 bg-gray-100 rounded-lg shadow-lg p-4">
+            <div className="flex-auto min-w-[350px] boder-gray-400 bg-gray-100 rounded-lg shadow-lg p-4">
               <h3 className="text-xl">サーバサイド</h3>
               <div className="p-1">
                 <p>■■■ python, Django</p>
@@ -105,7 +105,7 @@ export default function Home() {
                 <p>■□□ java</p>
               </div>
             </div>
-            <div className="flex-auto boder-gray-400 bg-gray-100 rounded-lg shadow-lg p-4">
+            <div className="flex-auto min-w-[350px] boder-gray-400 bg-gray-100 rounded-lg shadow-lg p-4">
               <h3 className="text-xl">フロントエンド</h3>
               <div className="p-1">
                 <p>■■■ Javascript</p>
